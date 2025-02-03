@@ -4,16 +4,13 @@ import MovieCard from './MovieCard.jsx';
 
 function App() {
   const [query, setQuery] = useState('');
-  const [year, setYear] = useState('');
   const [movies, setMovies] = useState([]);
   const [sortOrder, setSortOrder] = useState('asc');
   const [loading, setLoading] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
-  const moviesPerPage = 3;
 
   const searchMovies = async () => {
     setLoading(true);
-    const response = await fetch(`https://www.omdbapi.com/?s=${query}&y=${year}&apikey=e644856d`);
+    const response = await fetch(`https://www.omdbapi.com/?s=${query}&apikey=e644856d`);
     const data = await response.json();
     const moviesWithDetails = await Promise.all(
       (data.Search || []).map(async (movie) => {
@@ -24,7 +21,6 @@ function App() {
     );
     setMovies(moviesWithDetails);
     setLoading(false);
-    setCurrentPage(1); // Reset to first page on new search
   };
 
   const handleKeyPress = (event) => {
@@ -38,50 +34,39 @@ function App() {
     setMovies(sortedMovies);
   };
 
-  const indexOfLastMovie = currentPage * moviesPerPage;
-  const indexOfFirstMovie = indexOfLastMovie - moviesPerPage;
-  const currentMovies = movies.slice(indexOfFirstMovie, indexOfLastMovie);
-
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const clearResults = () => {
+    setMovies([]);
+    setQuery('');
+  };
 
   return (
     <>
       <div>
-        <h1>Movie Search App</h1>
+        <h1 className="title">Movie Search App</h1>
         <input 
           type="text" 
           value={query} 
           onChange={(e) => setQuery(e.target.value)} 
           placeholder="Search for a movie..." 
           onKeyPress={handleKeyPress}
+          className="search-input"
         />
-        <input 
-          type="text" 
-          value={year} 
-          onChange={(e) => setYear(e.target.value)} 
-          placeholder="Year" 
-        />
-        <button onClick={searchMovies}>Search</button>
-        <button onClick={sortMovies}>Sort by Rating</button>
+        <button onClick={searchMovies} className="search-button">Search</button>
+        <button onClick={sortMovies} className="sort-button">Sort by Rating</button>
+        <button onClick={clearResults} className="clear-button">Clear</button>
       </div>
       {loading ? (
         <div>Loading...</div>
       ) : (
-        <>
-          <div className="movies">
-            {currentMovies.map(movie => (
-              <MovieCard key={movie.imdbID} movie={movie} />
-            ))}
-          </div>
-          <div className="pagination">
-            {Array.from({ length: Math.ceil(movies.length / moviesPerPage) }, (_, index) => (
-              <button key={index + 1} onClick={() => paginate(index + 1)}>
-                {index + 1}
-              </button>
-            ))}
-          </div>
-        </>
+        <div className="movies">
+          {movies.map(movie => (
+            <MovieCard key={movie.imdbID} movie={movie} />
+          ))}
+        </div>
       )}
+      <footer className="footer">
+        <p>Powered by OMDb API</p>
+      </footer>
     </>
   );
 }

@@ -3,11 +3,11 @@
 function MovieCard({ movie }) {
   return (
     <div className="movie-card">
-      <h2>{movie.Title}</h2>
-      <p>{movie.Year}</p>
-      <img src={movie.Poster} alt={`${movie.Title} poster`} />
-      <p>Genre: {movie.Genre}</p> {/* Replace Type with Genre */}
-      <p>Rating: {movie.imdbRating}</p> {/* Replace IMDB ID with rating */}
+      <h2 className="movie-title">{movie.Title}</h2>
+      <p className="movie-year">{movie.Year}</p>
+      <img src={movie.Poster} alt={`${movie.Title} poster`} className="movie-poster" />
+      <p className="movie-genre">Genre: {movie.Genre}</p> {/* Replace Type with Genre */}
+      <p className="movie-rating">Rating: {movie.imdbRating}</p> {/* Replace IMDB ID with rating */}
     </div>
   );
 }

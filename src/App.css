@@ -45,6 +45,7 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
+  margin-top: 20px; /* Add space above the results */
 }
 
 input[type="text"] {
@@ -82,13 +83,74 @@ input[type="text"]:focus {
 }
 
 .pagination {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
+  display: none; /* Remove pagination styles */
 }
 
-.pagination button {
-  margin: 0 5px;
+.title {
+  font-size: 36px;
+  color: #4CAF50;
+  text-shadow: 2px 2px #000;
+}
+
+.search-input {
+  font-size: 20px;
+  padding: 10px;
+  margin-right: 10px;
+  border-radius: 5px;
+  border: 2px solid #4CAF50;
+  width: 300px;
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+.search-input:focus {
+  box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+}
+
+.search-button,
+.sort-button,
+.clear-button {
+  margin-right: 10px;
   padding: 10px 20px;
   cursor: pointer;
+}
+
+.movie-poster {
+  border-radius: 10px;
+  width: 100%;
+}
+
+.footer {
+  margin-top: 20px;
+  font-size: 14px;
+  color: #888;
+  text-align: center;
+}
+
+/* Responsive design for mobile devices */
+@media (max-width: 768px) {
+  .movie-card {
+    width: 100%;
+    margin: 10px 0;
+  }
+
+  .search-input {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .search-button,
+  .sort-button,
+  .clear-button {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .pagination {
+    flex-direction: column;
+  }
+
+  .pagination button {
+    width: 100%;
+    margin-bottom: 10px;
+  }
 }
