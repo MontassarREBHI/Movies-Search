@@ -126,6 +126,16 @@ input[type="text"]:focus {
   text-align: center;
 }
 
+.movie-plot {
+  margin-top: 10px;
+  font-size: 14px;
+  color: #555;
+}
+
+.movies-section {
+  display: none; /* Remove new sections */
+}
+
 /* Responsive design for mobile devices */
 @media (max-width: 768px) {
   .movie-card {

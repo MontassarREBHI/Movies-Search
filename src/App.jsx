@@ -5,21 +5,29 @@ import MovieCard from './MovieCard.jsx';
 function App() {
   const [query, setQuery] = useState('');
   const [movies, setMovies] = useState([]);
-  const [sortOrder, setSortOrder] = useState('asc');
   const [loading, setLoading] = useState(false);
 
   const searchMovies = async () => {
     setLoading(true);
-    const response = await fetch(`https://www.omdbapi.com/?s=${query}&apikey=e644856d`);
+    const trimmedQuery = query.trim();
+    const response = await fetch(`https://www.omdbapi.com/?s=${trimmedQuery}&apikey=e644856d`);
     const data = await response.json();
     const moviesWithDetails = await Promise.all(
       (data.Search || []).map(async (movie) => {
         const movieDetailsResponse = await fetch(`https://www.omdbapi.com/?i=${movie.imdbID}&apikey=e644856d`);
         const movieDetails = await movieDetailsResponse.json();
-        return { ...movie, imdbRating: movieDetails.imdbRating, Genre: movieDetails.Genre };
+        return { 
+          ...movie, 
+          imdbRating: movieDetails.imdbRating, 
+          Genre: movieDetails.Genre,
+          Plot: movieDetails.Plot
+        };
       })
     );
-    setMovies(moviesWithDetails);
+    const filteredMovies = moviesWithDetails.filter(movie =>
+      movie.Title.toLowerCase().includes(trimmedQuery.toLowerCase())
+    );
+    setMovies(filteredMovies);
     setLoading(false);
   };
 
@@ -47,7 +55,7 @@ function App() {
           type="text" 
           value={query} 
           onChange={(e) => setQuery(e.target.value)} 
-          placeholder="Search for a movie..." 
+          placeholder="Search by title..." 
           onKeyPress={handleKeyPress}
           className="search-input"
         />
